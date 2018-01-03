@@ -7,13 +7,13 @@ require "letsencrypt/version"
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
-  s.name        = "rails-letsencrypt"
+  s.name        = "rails-letsencrypt-mongoid"
   s.version     = LetsEncrypt::VERSION
-  s.authors     = ["蒼時弦也"]
-  s.email       = ["elct9620@frost.tw"]
+  s.authors     = ["蒼時弦也", "Nathan Broadbent"]
+  s.email       = ["elct9620@frost.tw", "rails@ndbroadbent.com"]
   s.homepage    = "https://github.com/elct9620/rails-letsencrypt"
-  s.summary     = "The Let's Encrypt certificate manager for rails"
-  s.description = "The Let's Encrypt certificate manager for rails"
+  s.summary     = "The Let's Encrypt certificate manager for rails (Mongoid fork)"
+  s.description = "The Let's Encrypt certificate manager for rails (Mongoid fork)"
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
