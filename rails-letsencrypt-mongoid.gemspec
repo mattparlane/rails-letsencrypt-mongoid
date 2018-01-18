@@ -22,9 +22,11 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", ">= 4.0"
   s.add_dependency "acme-client"
   s.add_dependency "redis"
+  s.add_dependency "mongoid", ">= 4.0"
 
   s.add_development_dependency "appraisal"
   s.add_development_dependency "rspec-rails"
+  s.add_development_dependency "database_cleaner"
   s.add_development_dependency "simplecov"
   s.add_development_dependency "coveralls"
   s.add_development_dependency "codeclimate-test-reporter"

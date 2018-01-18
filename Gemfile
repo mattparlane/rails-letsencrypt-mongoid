@@ -13,4 +13,5 @@ gemspec
 
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
-gem 'sqlite3'
+# gem 'sqlite3'
+gem 'mongoid', '>= 4.0'

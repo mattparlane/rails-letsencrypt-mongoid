@@ -22,7 +22,20 @@ module LetsEncrypt
   #  index_letsencrypt_certificates_on_domain       (domain)
   #  index_letsencrypt_certificates_on_renew_after  (renew_after)
   #
-  class Certificate < ActiveRecord::Base
+  class Certificate
+    include Mongoid::Document
+    include Mongoid::Timestamps
+
+    field :domain, type: String
+    field :certificate, type: String
+    field :intermediaries, type: String
+    field :key, type: String
+    field :expires_at, type: DateTime
+    field :renew_after, type: DateTime
+    field :verification_path, type: String
+    field :verification_string, type: String
+
+
     include CertificateVerifiable
     include CertificateIssuable
 
@@ -53,7 +66,9 @@ module LetsEncrypt
       verify && issue
     end
 
-    alias renew get
+    def renew
+      get
+    end
 
     # Returns full-chain bundled certificates
     def bundle

@@ -5,10 +5,20 @@ require 'rails/version'
 if Rails::VERSION::MAJOR == 5
   require_relative 'boot'
 
-  require 'rails/all'
+  %w(
+    action_controller
+    action_mailer
+    active_resource
+    rails/test_unit
+  ).each do |framework|
+    begin
+      require "#{framework}/railtie"
+    rescue LoadError
+    end
+  end
 
   Bundler.require(*Rails.groups)
-  require 'rails-letsencrypt'
+  require 'rails-letsencrypt-mongoid'
 
   module Dummy
     class Application < Rails::Application
@@ -20,14 +30,14 @@ else
   require File.expand_path('../boot', __FILE__)
 
   # Pick the frameworks you want:
-  require 'active_record/railtie'
+  # require 'active_record/railtie'
   require 'action_controller/railtie'
   require 'action_mailer/railtie'
   require 'action_view/railtie'
   require 'sprockets/railtie'
 
   Bundler.require(*Rails.groups)
-  require 'rails-letsencrypt'
+  require 'rails-letsencrypt-mongoid'
 
   module Dummy
     class Application < Rails::Application

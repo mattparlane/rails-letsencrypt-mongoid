@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'rails_helper'
+
 RSpec.describe LetsEncrypt::RenewCertificatesJob, type: :job do
   before(:all) { ActiveJob::Base.queue_adapter = :test }
 
@@ -8,15 +10,12 @@ RSpec.describe LetsEncrypt::RenewCertificatesJob, type: :job do
       .to have_enqueued_job(LetsEncrypt::RenewCertificatesJob)
   end
 
-  describe 'starting rnew' do
-    before(:each) do
-      expect(LetsEncrypt::Certificate).to receive(:renewable).and_return(certificates)
-    end
-
+  describe 'starting renew' do
     let(:certificates) { [LetsEncrypt::Certificate.new] }
 
     it 'do nothing when success' do
       expect_any_instance_of(LetsEncrypt::Certificate).to receive(:renew).and_return(true)
+      expect(LetsEncrypt::Certificate).to receive(:renewable).and_return(certificates)
       LetsEncrypt::RenewCertificatesJob.perform_now
     end
 
@@ -24,6 +23,7 @@ RSpec.describe LetsEncrypt::RenewCertificatesJob, type: :job do
       allow_any_instance_of(LetsEncrypt::Certificate).to receive(:renew).and_return(false)
       expect_any_instance_of(LetsEncrypt::Certificate)
         .to receive(:update).with(renew_after: an_instance_of(ActiveSupport::TimeWithZone))
+      expect(LetsEncrypt::Certificate).to receive(:renewable).and_return(certificates)
 
       LetsEncrypt::RenewCertificatesJob.perform_now
     end

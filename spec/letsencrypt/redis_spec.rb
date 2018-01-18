@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails-letsencrypt'
+require 'rails-letsencrypt-mongoid'
 
 RSpec.describe LetsEncrypt::Redis do
   let(:redis) { double(::Redis) }
