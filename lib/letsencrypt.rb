@@ -32,7 +32,13 @@ module LetsEncrypt
     end
 
     def load_private_key
-      return ENV['LETSENCRYPT_PRIVATE_KEY'] if config.use_env_key
+      if config.use_env_key
+        unless ENV['LETSENCRYPT_PRIVATE_KEY'].present?
+          raise "LETSENCRYPT_PRIVATE_KEY env variable is not set!"
+        end
+        # Handle URL escaped \n chars (%0A) in ENV variables. (For AWS OpsWorks UI)
+        return ENV['LETSENCRYPT_PRIVATE_KEY'].gsub('%0A', "\n")
+      end
       return File.open(private_key_path) if File.exist?(private_key_path)
       generate_private_key
     end
