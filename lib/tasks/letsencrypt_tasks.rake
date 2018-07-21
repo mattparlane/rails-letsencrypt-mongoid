@@ -7,9 +7,15 @@ namespace :letsencrypt do
     failed = 0
     LetsEncrypt::Certificate.renewable.each do |certificate|
       count += 1
-      next if certificate.renew
+      if certificate.renew
+        certificate.renewal_attempts = 0
+        certificate.save!
+        next
+      end
       failed += 1
       puts "Could not renew domain: #{certificate.domain}"
+      certificate.renewal_attempts += 1
+      certificate.save!
     end
 
     puts "Total #{count} domains should renew, and #{failed} domains cannot be renewed."
