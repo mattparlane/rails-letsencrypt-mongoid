@@ -34,7 +34,7 @@ module LetsEncrypt
     field :renew_after, type: DateTime
     field :verification_path, type: String
     field :verification_string, type: String
-
+    field :renewal_attempts, type: Integer, default: 0
 
     include CertificateVerifiable
     include CertificateIssuable
