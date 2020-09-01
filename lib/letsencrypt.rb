@@ -12,18 +12,18 @@ require 'letsencrypt/redis'
 # :nodoc:
 module LetsEncrypt
   # Production mode API Endpoint
-  ENDPOINT = 'https://acme-v01.api.letsencrypt.org/'
+  ENDPOINT = 'https://acme-v02.api.letsencrypt.org/directory'
 
   # Staging mode API Endpoint, the rate limit is higher
   # but got invalid certificate for testing
-  ENDPOINT_STAGING = 'https://acme-staging.api.letsencrypt.org'
+  ENDPOINT_STAGING = 'https://acme-staging-v02.api.letsencrypt.org/directory'
 
   class << self
     # Create the ACME Client to Let's Encrypt
     def client
       @client ||= ::Acme::Client.new(
         private_key: private_key,
-        endpoint: endpoint
+        directory: endpoint
       )
     end
 
