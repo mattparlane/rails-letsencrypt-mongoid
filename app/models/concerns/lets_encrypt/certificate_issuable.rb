@@ -18,19 +18,23 @@ module LetsEncrypt
     private
 
     def csr
-      csr = OpenSSL::X509::Request.new
-      csr.subject = OpenSSL::X509::Name.new(
-        [['CN', domain, OpenSSL::ASN1::UTF8STRING]]
-      )
       private_key = OpenSSL::PKey::RSA.new(key)
-      csr.public_key = private_key.public_key
-      csr.sign(private_key, OpenSSL::Digest::SHA256.new)
-      csr
+
+      csr = Acme::Client::CertificateRequest.new(
+        private_key: private_key,
+        subject: { common_name: domain }
+      )
     end
 
     def create_certificate
-      https_cert = LetsEncrypt.client.new_certificate(csr)
-      self.certificate = https_cert.to_pem
+      @order.finalize(csr: csr)
+      while @order.status == 'processing'
+        sleep(1)
+        @order.reload
+      end
+      https_cert = @order.certificate
+      self.certificate = https_cert # => PEM-formatted certificate
+
       self.intermediaries = https_cert.chain_to_pem
       self.expires_at = https_cert.x509.not_after
       self.renew_after = (expires_at - 1.month) + rand(10).days

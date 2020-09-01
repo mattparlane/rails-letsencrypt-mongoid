@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency "rails", ">= 4.0"
-  s.add_dependency "acme-client", "~> 0.6.2"
+  s.add_dependency "acme-client", "~> 2.0.0"
   s.add_dependency "redis"
   s.add_dependency "mongoid", ">= 4.0"
 
