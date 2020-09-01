@@ -35,8 +35,9 @@ module LetsEncrypt
       https_cert = @order.certificate
       self.certificate = https_cert # => PEM-formatted certificate
 
-      self.intermediaries = https_cert.chain_to_pem
-      self.expires_at = https_cert.x509.not_after
+      # self.intermediaries = https_cert.chain_to_pem
+      # self.expires_at = https_cert.x509.not_after
+      self.expires_at = 3.months.from_now
       self.renew_after = (expires_at - 1.month) + rand(10).days
       save!
     end
