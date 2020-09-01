@@ -47,7 +47,7 @@ module LetsEncrypt
 
     def check_verify_status
       unless @challenge.status == 'valid'
-        logger.info "Status was not valid (was: #{@challenge.verify_status})"
+        logger.info "Status was not valid (was: #{@challenge.status})"
         return false
       end
 
