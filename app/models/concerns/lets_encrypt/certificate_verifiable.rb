@@ -37,7 +37,7 @@ module LetsEncrypt
       until @challenge.status != 'pending'
         checks += 1
         if checks > 30
-          logger.info 'Status remained at pending for 30 checks'
+          logger.info "#{domain}: Status remained at pending for 30 checks"
           return false
         end
         sleep 1
@@ -47,7 +47,7 @@ module LetsEncrypt
 
     def check_verify_status
       unless @challenge.status == 'valid'
-        logger.info "Status was not valid (was: #{@challenge.status})"
+        logger.info "#{domain}: Status was not valid (was: #{@challenge.status})"
         return false
       end
 
@@ -58,11 +58,11 @@ module LetsEncrypt
       @retries ||= 0
       if e.is_a?(Acme::Client::Error::BadNonce) && @retries < 5
         @retries += 1
-        logger.info "Bad nounce encountered. Retrying (#{@retries} of 5 attempts)"
+        logger.info "#{domain}: Bad nounce encountered. Retrying (#{@retries} of 5 attempts)"
         sleep 1
         verify
       else
-        logger.info "Error: #{e.class} (#{e.message})"
+        logger.info "#{domain}: Error: #{e.class} (#{e.message})"
         return false
       end
     end
